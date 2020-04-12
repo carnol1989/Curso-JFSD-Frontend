@@ -1,0 +1,65 @@
+<mat-toolbar>Registro de Venta Especial</mat-toolbar>
+
+<form class="example-container" [formGroup]="form" (ngSubmit)="aceptar()" #ventaEspecialForm="ngForm">
+    <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Escoge una fecha" 
+            formControlName="fecha" (dateChange)="changeEvent($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input type="text" placeholder="Ingresar Persona" matInput [matAutocomplete]="autoPersona" 
+            [formControl]="myControlPersona" formControlName="persona">
+    </mat-form-field>
+    <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="mostrarPersona" 
+        (optionSelected)="seleccionarPersona($event)">
+        <mat-option *ngFor="let p of personasFiltradas | async" [value]="p">
+            {{ p.nombres }} {{ p.apellidos }}
+        </mat-option>
+    </mat-autocomplete>
+
+    <mat-form-field>
+        <input type="text" placeholder="Ingresar Producto" matInput [matAutocomplete]="autoProducto" 
+            [formControl]="myControlProducto" formControlName="producto">
+        <mat-autocomplete #autoProducto="matAutocomplete" [displayWith]="mostrarProducto" 
+            (optionSelected)="seleccionarProducto($event)">
+            <mat-option *ngFor="let prod of productosFiltrados | async" [value]="prod">
+                {{ prod.nombre }} {{ prod.marca }}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Precio Unitario" [(ngModel)]="precioUnitario" formControlName="precioUnitario">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Cantidad" [(ngModel)]="cantidad" formControlName="cantidad">
+    </mat-form-field>
+    
+    <button mat-raised-button color="primary" type="button" (click)="agregarDetalleVenta()">
+        Agregar Detalle
+    </button>
+
+    <mat-expansion-panel *ngFor="let detVta of detalleVenta; let i=index">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{ i + 1 }}) {{ detVta.producto.nombre }} - {{ detVta.cantidad }}
+            </mat-panel-title>
+            <mat-panel-description>
+                Ver Detalle
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <button mat-raised-button color="warn" type="button" (click)="removerDetalleVenta(i)">
+            Remover Detalle
+        </button>
+    </mat-expansion-panel>
+
+    <br>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="estadoBotonRegistrar()">
+        Registrar
+    </button>
+</form>
