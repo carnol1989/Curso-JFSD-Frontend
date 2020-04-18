@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  HOST: 'http://localhost:8181'
+  HOST: 'http://[IP_SERVER_BACKEND]:[PUERTO_SERVER_BACKEND]'
 };
 
 /*
